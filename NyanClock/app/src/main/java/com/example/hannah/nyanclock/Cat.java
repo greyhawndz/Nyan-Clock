@@ -11,7 +11,7 @@ public class Cat {
     public static final String COLUMN_HAPPINESS = "Happiness";
 
     private int id;
-    private String name;
+    private String name = "Nyanta";
     private int happiness;
     private int hunger;
 

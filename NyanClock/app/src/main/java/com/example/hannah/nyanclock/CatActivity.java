@@ -22,6 +22,7 @@ public class CatActivity extends AppCompatActivity {
     ImageButton ibButtonFeed, ibButtonAlarm;
     final static int REQUEST_TIME = 0;
     final static String KEY_TIME = "time";
+    Cat cat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +31,15 @@ public class CatActivity extends AppCompatActivity {
 
         ibButtonFeed = (ImageButton) findViewById(R.id.ib_ButtonFeed);
         ibButtonAlarm = (ImageButton) findViewById(R.id.ib_ButtonAlarm);
-
+        final DatabaseOpenHelper dbHelper = new DatabaseOpenHelper(getBaseContext());
+        cat = dbHelper.getCat(1);
         ibButtonFeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO: Increase hunger meter value
 
+                //Update cat in db
+                dbHelper.updateCat(cat);
             }
         });
 

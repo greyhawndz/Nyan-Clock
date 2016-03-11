@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //TODO: If cat does not exist, create new cat in db else, get cat from db
+
     }
 
 

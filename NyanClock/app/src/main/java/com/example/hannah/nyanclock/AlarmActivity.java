@@ -11,7 +11,7 @@ public class AlarmActivity extends AppCompatActivity {
 
     Button buttonSetTime, buttonBack;
     TimePicker timePicker;
-
+    Alarm alarm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,10 +21,14 @@ public class AlarmActivity extends AppCompatActivity {
         buttonBack = (Button) findViewById(R.id.button_Back);
         timePicker = (TimePicker) findViewById(R.id.tp_TimePicker);
 
+        final DatabaseOpenHelper dbHelper = new DatabaseOpenHelper(getBaseContext());
         buttonSetTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO: Create new alarm and set Time, day and clock(AM/PM) of alarm
 
+                //Add Alarm to db
+                dbHelper.addAlarm(alarm);
             }
         });
 

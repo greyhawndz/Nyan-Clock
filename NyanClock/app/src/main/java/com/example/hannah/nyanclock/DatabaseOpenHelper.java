@@ -18,23 +18,23 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql = "CREATE TABLE " + Cat.TABLE_NAME + "("
-                + Cat.COLUMN_ID + "INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + Cat.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + Cat.COLUMN_NAME + " TEXT, " + Cat.COLUMN_HAPPINESS + " INT, "
                 + Cat.COLUMN_HUNGER + " INT);";
+        String sql2 = "CREATE TABLE " +Alarm.TABLE_NAME + "("
+                +Alarm.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                +Alarm.COLUMN_TIME + " TEXT, " + Alarm.COLUMN_DAY + " TEXT, "
+                +Alarm.COLUMN_CLOCK +" TEXT);";
         db.execSQL(sql);
-    }
-
-    public long createCat(Cat cat){
-        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(sql2);
+        Cat cat = new Cat(100,100);
         ContentValues cv = new ContentValues();
-
         cv.put(Cat.COLUMN_NAME, cat.getName());
         cv.put(Cat.COLUMN_HAPPINESS, cat.getHappiness());
         cv.put(Cat.COLUMN_HUNGER, cat.getHunger());
-        long id = db.insert(Cat.TABLE_NAME, null, cv);
-        db.close();
-        return id;
+        db.insert(Cat.TABLE_NAME, null, cv);
     }
+
 
     public Cat getCat(int id){
         SQLiteDatabase db = getReadableDatabase();
@@ -52,6 +52,57 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         db.close();
         c.close();
         return cat;
+    }
+
+    public Alarm getAlarm(int id){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.query(Alarm.TABLE_NAME, null, " " + Alarm.COLUMN_ID + " = ?", new String[]{String.valueOf(id)}, null,null,null);
+        Alarm alarm = new Alarm();
+        if(c.moveToFirst()){
+            alarm.setId(c.getInt(c.getColumnIndex(Alarm.COLUMN_ID)));
+            alarm.setTime(c.getString(c.getColumnIndex(Alarm.COLUMN_TIME)));
+            alarm.setClock(c.getString(c.getColumnIndex(Alarm.COLUMN_CLOCK)));
+            alarm.setDay(c.getString(c.getColumnIndex(Alarm.COLUMN_DAY)));
+        }
+        else{
+            alarm = null;
+        }
+        db.close();
+        c.close();
+        return alarm;
+    }
+
+    public Cursor queryAlarms(){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.query(Alarm.TABLE_NAME, null,null,null,null,null,null);
+        return c;
+    }
+
+    public long addAlarm(Alarm alarm){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(Alarm.COLUMN_TIME, alarm.getTime());
+        cv.put(Alarm.COLUMN_DAY, alarm.getDay());
+        cv.put(Alarm.COLUMN_CLOCK, alarm.getDay());
+
+        long id = db.insert(Alarm.TABLE_NAME, null, cv);
+        db.close();
+        return id;
+    }
+
+    public long editAlarm(Alarm alarm){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(Alarm.COLUMN_TIME, alarm.getTime());
+        cv.put(Alarm.COLUMN_DAY, alarm.getDay());
+        cv.put(Alarm.COLUMN_CLOCK, alarm.getDay());
+
+        return db.update(Alarm.TABLE_NAME, cv, Alarm.COLUMN_ID + "=?", new String[]{String.valueOf(alarm.getId())});
+    }
+
+    public int deleteAlarm(int id){
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete(Alarm.TABLE_NAME, Alarm.COLUMN_ID + "=? ", new String[]{String.valueOf(id)});
     }
 
     public int updateCat(Cat cat)
