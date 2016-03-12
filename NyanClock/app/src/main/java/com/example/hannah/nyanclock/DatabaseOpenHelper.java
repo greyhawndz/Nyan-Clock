@@ -23,7 +23,14 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
                 + Cat.COLUMN_HUNGER + " INT);";
         String sql2 = "CREATE TABLE " +Alarm.TABLE_NAME + "("
                 +Alarm.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                +Alarm.COLUMN_TIME + " TEXT, " + Alarm.COLUMN_DAY + " TEXT, "
+                +Alarm.COLUMN_TIME + " TEXT, "
+                +Alarm.COLUMN_SUNDAY + " TEXT, "
+                +Alarm.COLUMN_MONDAY + " TEXT, "
+                +Alarm.COLUMN_TUESDAY + " TEXT, "
+                +Alarm.COLUMN_WEDNESDAY + " TEXT, "
+                +Alarm.COLUMN_THURSDAY + " TEXT, "
+                +Alarm.COLUMN_FRIDAY + " TEXT, "
+                +Alarm.COLUMN_SATURDAY + " TEXT, "
                 +Alarm.COLUMN_CLOCK +" TEXT);";
         db.execSQL(sql);
         db.execSQL(sql2);
@@ -61,8 +68,15 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         if(c.moveToFirst()){
             alarm.setId(c.getInt(c.getColumnIndex(Alarm.COLUMN_ID)));
             alarm.setTime(c.getString(c.getColumnIndex(Alarm.COLUMN_TIME)));
+            alarm.setSun(Boolean.parseBoolean(c.getString(c.getColumnIndex(Alarm.COLUMN_SUNDAY))));
+            alarm.setMon(Boolean.parseBoolean(c.getString(c.getColumnIndex(Alarm.COLUMN_MONDAY))));
+            alarm.setTues(Boolean.parseBoolean(c.getString(c.getColumnIndex(Alarm.COLUMN_TUESDAY))));
+            alarm.setWed(Boolean.parseBoolean(c.getString(c.getColumnIndex(Alarm.COLUMN_WEDNESDAY))));
+            alarm.setThurs(Boolean.parseBoolean(c.getString(c.getColumnIndex(Alarm.COLUMN_THURSDAY))));
+            alarm.setFri(Boolean.parseBoolean(c.getString(c.getColumnIndex(Alarm.COLUMN_FRIDAY))));
+            alarm.setSat(Boolean.parseBoolean(c.getString(c.getColumnIndex(Alarm.COLUMN_SATURDAY))));
             alarm.setClock(c.getString(c.getColumnIndex(Alarm.COLUMN_CLOCK)));
-            alarm.setDay(c.getString(c.getColumnIndex(Alarm.COLUMN_DAY)));
+
         }
         else{
             alarm = null;
@@ -82,8 +96,14 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(Alarm.COLUMN_TIME, alarm.getTime());
-        cv.put(Alarm.COLUMN_DAY, alarm.getDay());
-        cv.put(Alarm.COLUMN_CLOCK, alarm.getDay());
+        cv.put(Alarm.COLUMN_SUNDAY, alarm.isSun());
+        cv.put(Alarm.COLUMN_MONDAY, alarm.isMon());
+        cv.put(Alarm.COLUMN_TUESDAY, alarm.isTues());
+        cv.put(Alarm.COLUMN_WEDNESDAY, alarm.isWed());
+        cv.put(Alarm.COLUMN_THURSDAY, alarm.isThurs());
+        cv.put(Alarm.COLUMN_FRIDAY, alarm.isFri());
+        cv.put(Alarm.COLUMN_SATURDAY, alarm.isSat());
+        cv.put(Alarm.COLUMN_CLOCK, alarm.getClock());
 
         long id = db.insert(Alarm.TABLE_NAME, null, cv);
         db.close();
@@ -94,8 +114,14 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(Alarm.COLUMN_TIME, alarm.getTime());
-        cv.put(Alarm.COLUMN_DAY, alarm.getDay());
-        cv.put(Alarm.COLUMN_CLOCK, alarm.getDay());
+        cv.put(Alarm.COLUMN_SUNDAY, alarm.isSun());
+        cv.put(Alarm.COLUMN_MONDAY, alarm.isMon());
+        cv.put(Alarm.COLUMN_TUESDAY, alarm.isTues());
+        cv.put(Alarm.COLUMN_WEDNESDAY, alarm.isWed());
+        cv.put(Alarm.COLUMN_THURSDAY, alarm.isThurs());
+        cv.put(Alarm.COLUMN_FRIDAY, alarm.isFri());
+        cv.put(Alarm.COLUMN_SATURDAY, alarm.isSat());
+        cv.put(Alarm.COLUMN_CLOCK,alarm.getClock());
 
         return db.update(Alarm.TABLE_NAME, cv, Alarm.COLUMN_ID + "=?", new String[]{String.valueOf(alarm.getId())});
     }

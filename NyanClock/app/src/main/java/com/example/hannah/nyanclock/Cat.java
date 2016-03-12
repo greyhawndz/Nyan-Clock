@@ -18,6 +18,7 @@ public class Cat {
     public Cat(){
 
     }
+
     public Cat(int happiness, int hunger){
         this.happiness = happiness;
         this.hunger = hunger;
