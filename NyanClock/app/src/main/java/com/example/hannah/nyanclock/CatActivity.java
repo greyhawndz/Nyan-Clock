@@ -1,12 +1,6 @@
 /*
 This is where the main Cat related activities happen
-
-TODO:
-- Put the Hunger meter (counter?)
-- Put the Happy meter (counter?)
-- Put the Emotion state
-- Put the Cat asset
-- Connect to AlarmActivity
+Feed Button and Set Alarm Button
  */
 
 package com.example.hannah.nyanclock;
@@ -22,6 +16,7 @@ public class CatActivity extends AppCompatActivity {
     ImageButton ibButtonFeed, ibButtonAlarm;
     final static int REQUEST_TIME = 0;
     final static String KEY_TIME = "time";
+    DatabaseOpenHelper dbHelper;
     Cat cat;
 
     @Override
@@ -29,20 +24,25 @@ public class CatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cat);
 
+        // Variables
         ibButtonFeed = (ImageButton) findViewById(R.id.ib_ButtonFeed);
         ibButtonAlarm = (ImageButton) findViewById(R.id.ib_ButtonAlarm);
-        final DatabaseOpenHelper dbHelper = new DatabaseOpenHelper(getBaseContext());
+        dbHelper = new DatabaseOpenHelper(getBaseContext());
         cat = dbHelper.getCat(1);
+
+        // Feeds the cat -> increases hunger meter and happy meter
         ibButtonFeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO: Increase hunger meter value
+                //TODO: Increases happy meter value
 
                 //Update cat in db
                 dbHelper.updateCat(cat);
             }
         });
 
+        // Goes to the AlarmActivity -> where user can set and edit alarms
         ibButtonAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

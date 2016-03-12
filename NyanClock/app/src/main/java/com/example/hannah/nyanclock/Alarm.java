@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
  * Created by WilliamPC on 3/11/2016.
  */
 public class Alarm {
+
     public static final String TABLE_NAME = "Alarms";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_TIME = "Time";
@@ -29,7 +30,6 @@ public class Alarm {
         time = hour+":"+minutes +" "+clock;
 
     }
-
 
     public Alarm(String hour, String minutes,  String day, String clock){
         time = hour+":"+minutes +" "+clock;
@@ -65,7 +65,6 @@ public class Alarm {
     public void setId(int id){
         this.id = id;
     }
-
 
 
     public String getTime(){

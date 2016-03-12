@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         ivTextTitle = (ImageView) findViewById(R.id.iv_TextTitle);
         ibButtonStart = (ImageButton) findViewById(R.id.ib_ButtonStart);
 
+        // Goes to the CatActivity -> where the app is gonna be played
         ibButtonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

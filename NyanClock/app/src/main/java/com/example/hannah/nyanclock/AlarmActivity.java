@@ -3,40 +3,50 @@ package com.example.hannah.nyanclock;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TimePicker;
 
 public class AlarmActivity extends AppCompatActivity {
 
-    Button buttonSetTime, buttonBack;
-    TimePicker timePicker;
-    Alarm alarm;
+    ImageButton buttonBack, buttonAdd;
+    RecyclerView lvAlarms;
+
+    DatabaseOpenHelper dbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
 
-        buttonSetTime = (Button) findViewById(R.id.button_SetTime);
-        buttonBack = (Button) findViewById(R.id.button_Back);
-        timePicker = (TimePicker) findViewById(R.id.tp_TimePicker);
+        // Variables
+        lvAlarms = (RecyclerView) findViewById(R.id.lv_Alarms);
+        buttonBack = (ImageButton) findViewById(R.id.button_Back);
+        buttonAdd = (ImageButton) findViewById(R.id.button_AddAlarm);
 
-        final DatabaseOpenHelper dbHelper = new DatabaseOpenHelper(getBaseContext());
-        buttonSetTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: Create new alarm and set Time, day and clock(AM/PM) of alarm
-
-                //Add Alarm to db
-                dbHelper.addAlarm(alarm);
-            }
-        });
-
+        // Goes back to CatActivity
         buttonBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+
+        // Goes to AddAlarmActivity to add an alarm
+        buttonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent();
+                i.setClass(getBaseContext(), AddAlarmActivity.class);
+                startActivity(i);
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }

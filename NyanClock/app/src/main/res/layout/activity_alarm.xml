@@ -11,29 +11,37 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <Button
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Back"
-            android:textSize="20sp"
-            android:id="@+id/button_Back"
-            android:layout_margin="5dp"
-            />
+            android:orientation="horizontal">
 
-        <TimePicker
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tp_TimePicker"
-            android:layout_gravity="center" />
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/button_back"
+                android:id="@+id/button_Back"
+                android:layout_margin="5dp"
+                android:layout_alignParentLeft="true"
+                android:background="@android:color/transparent"
+                />
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/button_add"
+                android:id="@+id/button_AddAlarm"
+                android:layout_margin="5dp"
+                android:layout_alignParentRight="true"
+                android:background="@android:color/transparent"
+                />
+        </RelativeLayout>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Set Time"
-            android:textSize="30sp"
-            android:id="@+id/button_SetTime"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="30dp"/>
+        <android.support.v7.widget.RecyclerView
+            android:layout_height="match_parent"
+            android:layout_width = "match_parent"
+            android:layout_margin="10dp"
+            android:id="@+id/lv_Alarms"/>
+
     </LinearLayout>
 
 </RelativeLayout>
