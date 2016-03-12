@@ -5,37 +5,133 @@
     android:layout_height="match_parent"
     tools:context="com.example.hannah.nyanclock.EditAlarmActivity">
 
-    <ImageButton
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/button_Cancel"
-        android:src="@drawable/button_cancel"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="5dp"
-        android:background="@android:color/transparent"
+        android:id="@+id/rl_buttons">
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_Cancel"
+            android:src="@drawable/button_cancel"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="5dp"
+            android:background="@android:color/transparent"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_Save"
+            android:src="@drawable/button_save"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@id/button_Cancel"
+            android:layout_margin="5dp"
+            android:background="@android:color/transparent"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_Delete"
+            android:src="@drawable/button_delete"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@id/button_Save"
+            android:layout_margin="5dp"
+            android:background="@android:color/transparent"
+            />
+    </RelativeLayout>
+
+
+    <TimePicker
+        android:id="@+id/timePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_buttons"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
         />
 
-    <ImageButton
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/button_Save"
-        android:src="@drawable/button_save"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@id/button_Cancel"
-        android:layout_margin="5dp"
-        android:background="@android:color/transparent"
-        />
+        android:layout_below="@id/timePicker"
+        android:layout_margin="10dp">
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button_Delete"
-        android:src="@drawable/button_delete"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@id/button_Save"
-        android:layout_margin="5dp"
-        android:background="@android:color/transparent"
-        />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cb_Sunday"
+                    android:text="Sunday"
+                    android:textSize="20sp"
+                    />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cb_Monday"
+                    android:text="Monday"
+                    android:textSize="20sp"
+                    android:layout_below="@id/cb_Sunday"
+                    />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cb_Tuesday"
+                    android:text="Tuesday"
+                    android:textSize="20sp"
+                    android:layout_below="@id/cb_Monday"
+                    />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cb_Wednesday"
+                    android:text="Wednesday"
+                    android:textSize="20sp"
+                    android:layout_below="@id/cb_Tuesday"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cb_Thursday"
+                    android:text="Thursday"
+                    android:textSize="20sp"
+                    />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cb_Friday"
+                    android:text="Friday"
+                    android:textSize="20sp"
+                    android:layout_below="@id/cb_Thursday"
+                    />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cb_Saturday"
+                    android:text="Saturday"
+                    android:textSize="20sp"
+                    android:layout_below="@id/cb_Friday"
+                    />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </RelativeLayout>
