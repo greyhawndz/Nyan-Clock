@@ -78,7 +78,6 @@ public class EditAlarmActivity extends AppCompatActivity {
             cbSunday.post(new Runnable() {
                 @Override
                 public void run() {
-
                     cbSunday.setChecked(true);
                 }
             });

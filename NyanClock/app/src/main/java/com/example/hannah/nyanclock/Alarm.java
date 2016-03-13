@@ -55,6 +55,7 @@ public class Alarm {
         thurs = day[4];
         fri = day[5];
         sat = day[6];
+        System.out.println(sun + " " + mon + " " + tues);
 
     }
 
@@ -68,6 +69,7 @@ public class Alarm {
         thurs = day[4];
         fri = day[5];
         sat = day[6];
+        System.out.println(sun + " " + mon + " " + tues);
     }
 
     public Timestamp getTimeStamp(){

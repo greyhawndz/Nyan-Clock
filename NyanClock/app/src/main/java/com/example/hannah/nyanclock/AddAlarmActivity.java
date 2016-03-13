@@ -10,6 +10,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class AddAlarmActivity extends AppCompatActivity {
 
@@ -17,6 +18,10 @@ public class AddAlarmActivity extends AppCompatActivity {
     TimePicker timePicker;
     CheckBox cbSunday, cbMonday, cbTuesday, cbWednesday, cbThursday, cbFriday, cbSaturday;
     ArrayList<CheckBox> listDays;
+
+    public Calendar calendar;
+    public int hour;
+    public int minute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +65,8 @@ public class AddAlarmActivity extends AppCompatActivity {
                 // Save the alarm, add alarm to database
 
                 boolean[] selectedDays = new boolean[7]; // days with checks
-                final int hour = timePicker.getCurrentHour();
-                final int minute = timePicker.getCurrentMinute();
+                hour = timePicker.getCurrentHour();
+                minute = timePicker.getCurrentMinute();
 
                 // Check if the checkbox is checked, if yes then add to selectedDays
                 for(int i = 0; i < listDays.size(); i++)
@@ -127,5 +132,14 @@ public class AddAlarmActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public Calendar getCalendar()
+    {
+        calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+
+        return calendar;
     }
 }
