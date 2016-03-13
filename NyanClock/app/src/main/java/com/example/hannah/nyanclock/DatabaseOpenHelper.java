@@ -85,13 +85,62 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         if(c.moveToFirst()){
             alarm.setId(c.getInt(c.getColumnIndex(Alarm.COLUMN_ID)));
             alarm.setTime(c.getString(c.getColumnIndex(Alarm.COLUMN_TIME)));
-            alarm.setSun(Boolean.parseBoolean(c.getString(c.getColumnIndex(Alarm.COLUMN_SUNDAY))));
-            alarm.setMon(Boolean.parseBoolean(c.getString(c.getColumnIndex(Alarm.COLUMN_MONDAY))));
-            alarm.setTues(Boolean.parseBoolean(c.getString(c.getColumnIndex(Alarm.COLUMN_TUESDAY))));
-            alarm.setWed(Boolean.parseBoolean(c.getString(c.getColumnIndex(Alarm.COLUMN_WEDNESDAY))));
-            alarm.setThurs(Boolean.parseBoolean(c.getString(c.getColumnIndex(Alarm.COLUMN_THURSDAY))));
-            alarm.setFri(Boolean.parseBoolean(c.getString(c.getColumnIndex(Alarm.COLUMN_FRIDAY))));
-            alarm.setSat(Boolean.parseBoolean(c.getString(c.getColumnIndex(Alarm.COLUMN_SATURDAY))));
+            if(c.getString(c.getColumnIndex(Alarm.COLUMN_SUNDAY)).equals("1"))
+            {
+                alarm.setSun(Boolean.parseBoolean("true"));
+            }
+            else
+            {
+                alarm.setSun(Boolean.parseBoolean("false"));
+            }
+            if(c.getString(c.getColumnIndex(Alarm.COLUMN_MONDAY)).equals("1"))
+            {
+                alarm.setMon(Boolean.parseBoolean("true"));
+            }
+            else
+            {
+                alarm.setMon(Boolean.parseBoolean("false"));
+            }
+            if(c.getString(c.getColumnIndex(Alarm.COLUMN_TUESDAY)).equals("1"))
+            {
+                alarm.setTues(Boolean.parseBoolean("true"));
+            }
+            else
+            {
+                alarm.setTues(Boolean.parseBoolean("false"));
+            }
+            if(c.getString(c.getColumnIndex(Alarm.COLUMN_WEDNESDAY)).equals("1"))
+            {
+                alarm.setWed(Boolean.parseBoolean("true"));
+            }
+            else
+            {
+                alarm.setWed(Boolean.parseBoolean("false"));
+            }
+            if(c.getString(c.getColumnIndex(Alarm.COLUMN_THURSDAY)).equals("1"))
+            {
+                alarm.setThurs(Boolean.parseBoolean("true"));
+            }
+            else
+            {
+                alarm.setThurs(Boolean.parseBoolean("false"));
+            }
+            if(c.getString(c.getColumnIndex(Alarm.COLUMN_FRIDAY)).equals("1"))
+            {
+                alarm.setFri(Boolean.parseBoolean("true"));
+            }
+            else
+            {
+                alarm.setFri(Boolean.parseBoolean("false"));
+            }
+            if(c.getString(c.getColumnIndex(Alarm.COLUMN_SATURDAY)).equals("1"))
+            {
+                alarm.setSat(Boolean.parseBoolean("true"));
+            }
+            else
+            {
+                alarm.setSat(Boolean.parseBoolean("false"));
+            }
             alarm.setClock(c.getString(c.getColumnIndex(Alarm.COLUMN_CLOCK)));
         }
         else{
