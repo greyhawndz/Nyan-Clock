@@ -24,7 +24,7 @@ public class CatReceiver extends BroadcastReceiver {
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context,
                 CA_PENDINGINTENT,
-                new Intent(context, MainActivity.class),
+                new Intent(context, CatActivity.class),
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder
