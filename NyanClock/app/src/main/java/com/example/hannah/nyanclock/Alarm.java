@@ -25,17 +25,9 @@ public class Alarm {
     private int id;
     private boolean sun;
     private boolean mon;
-
-
-
-
-
     private boolean tues;
     private boolean wed;
     private boolean thurs;
-
-
-
     private boolean fri;
     private boolean sat;
     private String time;
@@ -55,8 +47,7 @@ public class Alarm {
         thurs = day[4];
         fri = day[5];
         sat = day[6];
-        System.out.println(sun + " " + mon + " " + tues);
-
+        System.out.println(sun + " " + mon + " " + tues + " " + wed + " " + thurs + " " + fri + " " + sat);
     }
 
     //Values of day array SHOULD be in order: Sunday - Saturday
@@ -69,7 +60,7 @@ public class Alarm {
         thurs = day[4];
         fri = day[5];
         sat = day[6];
-        System.out.println(sun + " " + mon + " " + tues);
+        System.out.println(sun + " " + mon + " " + tues + " " + wed + " " + thurs + " " + fri + " " + sat);
     }
 
     public Timestamp getTimeStamp(){
@@ -87,60 +78,60 @@ public class Alarm {
         }
     }
 
-    public boolean isSun() {
-        return sun;
-    }
-
     public void setSun(boolean sun) {
         this.sun = sun;
-    }
-
-    public boolean isMon() {
-        return mon;
     }
 
     public void setMon(boolean mon) {
         this.mon = mon;
     }
 
-    public boolean isTues() {
-        return tues;
-    }
-
     public void setTues(boolean tues) {
         this.tues = tues;
-    }
-
-    public boolean isWed() {
-        return wed;
     }
 
     public void setWed(boolean wed) {
         this.wed = wed;
     }
 
-    public boolean isThurs() {
-        return thurs;
-    }
-
     public void setThurs(boolean thurs) {
         this.thurs = thurs;
-    }
-
-    public boolean isFri() {
-        return fri;
     }
 
     public void setFri(boolean fri) {
         this.fri = fri;
     }
 
-    public boolean isSat() {
-        return sat;
-    }
-
     public void setSat(boolean sat) {
         this.sat = sat;
+    }
+
+    public boolean isSun() {
+        return sun;
+    }
+
+    public boolean isMon() {
+        return mon;
+    }
+
+    public boolean isTues() {
+        return tues;
+    }
+
+    public boolean isWed() {
+        return wed;
+    }
+
+    public boolean isThurs() {
+        return thurs;
+    }
+
+    public boolean isFri() {
+        return fri;
+    }
+
+    public boolean isSat() {
+        return sat;
     }
 
     public int getId(){

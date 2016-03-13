@@ -41,7 +41,7 @@ public class EditAlarmActivity extends AppCompatActivity {
         dbHelper = new DatabaseOpenHelper(getBaseContext());
 
         // So that we only check this in buttonSave OnClickListener
-        listDays = new ArrayList<>(0);
+        listDays = new ArrayList<CheckBox>();
         listDays.add(cbSunday);
         listDays.add(cbMonday);
         listDays.add(cbTuesday);
@@ -56,6 +56,9 @@ public class EditAlarmActivity extends AppCompatActivity {
         //get current note
         // the id in the param is the ID we passed from AlarmActivity
         currentAlarm = dbHelper.getAlarm(id);
+        System.out.println("HOUR: " + currentAlarm.getTime().substring(0, 2));
+        System.out.println("MINUTE: " + currentAlarm.getTime().substring(3, 5));
+        System.out.println("CLOCK: " + currentAlarm.getTime().substring(6, 8));
 
         // displaying of data: TimePicker and Checkboxes
         String hour = currentAlarm.getTime().substring(0, 2);
@@ -72,7 +75,8 @@ public class EditAlarmActivity extends AppCompatActivity {
         }
         timePicker.setCurrentMinute(Integer.parseInt(minute));
 
-        // TODO: Fix the setChecked for the Checkbox
+        // setChecked checks the Checkboxes that are true in the database
+        System.out.println("SUNDAY is " + currentAlarm.isSun());
         if(currentAlarm.isSun())
         {
             cbSunday.post(new Runnable() {
@@ -82,6 +86,7 @@ public class EditAlarmActivity extends AppCompatActivity {
                 }
             });
         }
+        System.out.println("MONDAY is " + currentAlarm.isMon());
         if(currentAlarm.isMon())
         {
             cbMonday.post(new Runnable() {
@@ -91,6 +96,7 @@ public class EditAlarmActivity extends AppCompatActivity {
                 }
             });
         }
+        System.out.println("TUESDAY is " + currentAlarm.isTues());
         if(currentAlarm.isTues())
         {
             cbTuesday.post(new Runnable() {
@@ -100,6 +106,7 @@ public class EditAlarmActivity extends AppCompatActivity {
                 }
             });
         }
+        System.out.println("WEDNESDAY is " + currentAlarm.isWed());
         if(currentAlarm.isWed())
         {
             cbWednesday.post(new Runnable() {
@@ -109,6 +116,7 @@ public class EditAlarmActivity extends AppCompatActivity {
                 }
             });
         }
+        System.out.println("THURSDAY is " + currentAlarm.isThurs());
         if(currentAlarm.isThurs())
         {
             cbThursday.post(new Runnable() {
@@ -118,6 +126,7 @@ public class EditAlarmActivity extends AppCompatActivity {
                 }
             });
         }
+        System.out.println("FRIDAY is " + currentAlarm.isFri());
         if(currentAlarm.isFri())
         {
             cbFriday.post(new Runnable() {
@@ -127,6 +136,7 @@ public class EditAlarmActivity extends AppCompatActivity {
                 }
             });
         }
+        System.out.println("SATURDAY is " + currentAlarm.isSat());
         if(currentAlarm.isSat())
         {
             cbSaturday.post(new Runnable() {
@@ -162,6 +172,7 @@ public class EditAlarmActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 boolean[] selectedDays = new boolean[7]; // days with checks
+                int trueDaysCount = 0;
                 final int hour = timePicker.getCurrentHour();
                 final int minute = timePicker.getCurrentMinute();
 
@@ -171,16 +182,18 @@ public class EditAlarmActivity extends AppCompatActivity {
                     if(listDays.get(i).isChecked())
                     {
                         selectedDays[i] = true;
+                        trueDaysCount ++;
                     }
                     else
                     {
                         selectedDays[i] = false;
                     }
+                    System.out.println(selectedDays[i]);
                 }
 
                 // if selectedDays has at least one day, then user can save alarm
                 // else, Toast
-                if(selectedDays.length > 0)
+                if(trueDaysCount > 0)
                 {
                     // We changed the hour to 12 hour format
                     String strHour = "";

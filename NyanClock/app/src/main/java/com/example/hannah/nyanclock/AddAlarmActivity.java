@@ -79,6 +79,7 @@ public class AddAlarmActivity extends AppCompatActivity {
                     {
                         selectedDays[i] = false;
                     }
+                    System.out.println(selectedDays[i]);
                 }
 
                 // if selectedDays has at least one day, then user can save alarm
