@@ -100,11 +100,24 @@ public class CatActivity extends AppCompatActivity {
         ibButtonFeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Increase hunger meter value
-                //TODO: Increases happy meter value
+                cat = dbHelper.getCat(1);
 
-                //Update cat in db
+                // increase happiness by 10
+                int newHunger = cat.getHunger() + 10;
+
+                if(newHunger > 100)
+                {
+                    cat.setHunger(100);
+                }
+                else
+                {
+                    cat.setHunger(newHunger);
+                }
+
                 dbHelper.updateCat(cat);
+                cat = dbHelper.getCat(1);
+
+                tvHungerCount.setText(String.valueOf(cat.getHunger()));
             }
         });
 
