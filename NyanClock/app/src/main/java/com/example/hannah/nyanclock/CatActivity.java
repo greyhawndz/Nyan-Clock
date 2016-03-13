@@ -8,14 +8,19 @@ package com.example.hannah.nyanclock;
 import android.app.AlarmManager;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class CatActivity extends AppCompatActivity {
 
@@ -43,6 +48,52 @@ public class CatActivity extends AppCompatActivity {
         ivState = (ImageView) findViewById(R.id.iv_state);
         dbHelper = new DatabaseOpenHelper(getBaseContext());
         cat = dbHelper.getCat(1);
+
+        // hunger and happy meter decrease by 10 every minute
+        final Handler handler = new Handler();
+        //update current time view after every 60 seconds
+        final Runnable updateTask = new Runnable() {
+            @Override
+            public void run() {
+                int newHunger;
+                int newHappy;
+                cat = dbHelper.getCat(1);
+
+                System.out.println("INSIDE RUN");
+
+                // Decrease hunger and happiness
+                newHunger = cat.getHunger() - 10;
+                newHappy = cat.getHappiness() - 10;
+                if(newHunger > 0)
+                {
+                    cat.setHunger(newHunger);
+                }
+                else
+                {
+                    cat.setHunger(0);
+                }
+                if(newHappy > 0)
+                {
+                    cat.setHappiness(newHappy);
+                }
+                else
+                {
+                    cat.setHappiness(0);
+                }
+
+                // Put newHunger and newHappy in database
+                dbHelper.updateCat(cat);
+                cat = dbHelper.getCat(1);
+
+                // Display the updated hunger and happiness
+                tvHungerCount.setText(String.valueOf(cat.getHunger()));
+                tvHappyCount.setText(String.valueOf(cat.getHappiness()));
+
+                handler.postDelayed(this, 60000);
+            }
+        };
+        // Will call updateTask after 1 minute into opening the app -> does ONCE
+        handler.postDelayed(updateTask, 60000);
 
 
         // Feeds the cat -> increases hunger meter and happy meter
@@ -73,14 +124,44 @@ public class CatActivity extends AppCompatActivity {
                 Toast.makeText(CatActivity.this, "top", Toast.LENGTH_SHORT).show();
             }
             public void onSwipeRight() {
-                // TODO: connect to database to (if happy meter < 100) increase the happiness
-                // TODO: after increasing happiness, reflect new happiness to happy meter
-                Toast.makeText(CatActivity.this, "right", Toast.LENGTH_SHORT).show();
+                cat = dbHelper.getCat(1);
+
+                // increase happiness by 10
+                int newHappy = cat.getHappiness() + 10;
+
+                if(newHappy > 100)
+                {
+                    cat.setHappiness(100);
+                }
+                else
+                {
+                    cat.setHappiness(newHappy);
+                }
+
+                dbHelper.updateCat(cat);
+                cat = dbHelper.getCat(1);
+
+                tvHappyCount.setText(String.valueOf(cat.getHappiness()));
             }
             public void onSwipeLeft() {
-                // TODO: connect to database to (if happy meter < 100) increase the happiness
-                // TODO: after increasing happiness, reflect new happiness to happy meter
-                Toast.makeText(CatActivity.this, "left", Toast.LENGTH_SHORT).show();
+                cat = dbHelper.getCat(1);
+
+                // increase happiness by 10
+                int newHappy = cat.getHappiness() + 10;
+
+                if(newHappy > 100)
+                {
+                    cat.setHappiness(100);
+                }
+                else
+                {
+                    cat.setHappiness(newHappy);
+                }
+
+                dbHelper.updateCat(cat);
+                cat = dbHelper.getCat(1);
+
+                tvHappyCount.setText(String.valueOf(cat.getHappiness()));
             }
             public void onSwipeBottom() {
                 Toast.makeText(CatActivity.this, "bottom", Toast.LENGTH_SHORT).show();
