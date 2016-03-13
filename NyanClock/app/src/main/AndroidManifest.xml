@@ -18,7 +18,12 @@
         <activity android:name=".CatActivity" />
         <activity android:name=".AlarmActivity" />
         <activity android:name=".AddAlarmActivity" />
-        <activity android:name=".EditAlarmActivity"></activity>
+        <activity android:name=".EditAlarmActivity" />
+
+        <receiver
+            android:name=".AlarmReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
     </application>
 
 </manifest>

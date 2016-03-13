@@ -1,8 +1,10 @@
 package com.example.hannah.nyanclock;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +17,7 @@ public class AlarmActivity extends AppCompatActivity {
     RecyclerView lvAlarms;
 
     DatabaseOpenHelper dbHelper;
+    AlarmCursorAdapter alarmCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,7 @@ public class AlarmActivity extends AppCompatActivity {
         lvAlarms = (RecyclerView) findViewById(R.id.lv_Alarms);
         buttonBack = (ImageButton) findViewById(R.id.button_Back);
         buttonAdd = (ImageButton) findViewById(R.id.button_AddAlarm);
+        dbHelper = new DatabaseOpenHelper(getBaseContext());
 
         // Goes back to CatActivity
         buttonBack.setOnClickListener(new View.OnClickListener() {
@@ -43,10 +47,35 @@ public class AlarmActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        // So we can click the whole container of each RecyclerView
+        alarmCursorAdapter = new AlarmCursorAdapter(getBaseContext(), null);
+        alarmCursorAdapter.setmOnItemClickListener(new AlarmCursorAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int id) {
+                //id = id of the note clicked
+                Intent i = new Intent();
+                i.setClass(getBaseContext(), EditAlarmActivity.class);
+                //putExtra - the same concept as ContentValues
+                //you're putting id to a variable Alarm.COLUMN_ID; we wanna send id to EditAlarmActivity
+                // so we can view it
+                i.putExtra(Alarm.COLUMN_ID, id);
+                startActivity(i);
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        //getting all the updated notes
+        Cursor cursor = dbHelper.queryAlarms();
+        // swap = think as setCursor
+        alarmCursorAdapter.swapCursor(cursor);
+        //noteCursorAdapter has the updated notes
+
+        lvAlarms.setAdapter(alarmCursorAdapter);
+        lvAlarms.setLayoutManager(new LinearLayoutManager(getBaseContext()));
     }
 }

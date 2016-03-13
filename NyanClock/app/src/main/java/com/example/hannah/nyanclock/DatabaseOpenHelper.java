@@ -27,12 +27,29 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
                 +Alarm.COLUMN_CLOCK +" TEXT);";
         db.execSQL(sql);
         db.execSQL(sql2);
+
+        // Inserted cat into cat database
         Cat cat = new Cat(100,100);
-        ContentValues cv = new ContentValues();
-        cv.put(Cat.COLUMN_NAME, cat.getName());
-        cv.put(Cat.COLUMN_HAPPINESS, cat.getHappiness());
-        cv.put(Cat.COLUMN_HUNGER, cat.getHunger());
-        db.insert(Cat.TABLE_NAME, null, cv);
+        ContentValues cv1 = new ContentValues();
+        cv1.put(Cat.COLUMN_NAME, cat.getName());
+        cv1.put(Cat.COLUMN_HAPPINESS, cat.getHappiness());
+        cv1.put(Cat.COLUMN_HUNGER, cat.getHunger());
+        db.insert(Cat.TABLE_NAME, null, cv1);
+
+        // Inserted the default alarm
+        boolean[] setDays = {false, true, false, false, false, false, false};
+        Alarm alarm = new Alarm("06", "00", setDays, "AM");
+        ContentValues cv2 = new ContentValues();
+        cv2.put(Alarm.COLUMN_TIME, alarm.getTime());
+        cv2.put(Alarm.COLUMN_CLOCK, alarm.getClock());
+        cv2.put(Alarm.COLUMN_SUNDAY, alarm.isSun());
+        cv2.put(Alarm.COLUMN_MONDAY, alarm.isMon());
+        cv2.put(Alarm.COLUMN_TUESDAY, alarm.isTues());
+        cv2.put(Alarm.COLUMN_WEDNESDAY, alarm.isWed());
+        cv2.put(Alarm.COLUMN_THURSDAY, alarm.isThurs());
+        cv2.put(Alarm.COLUMN_FRIDAY, alarm.isFri());
+        cv2.put(Alarm.COLUMN_SATURDAY, alarm.isSat());
+        db.insert(Alarm.TABLE_NAME, null, cv2);
     }
 
 
@@ -49,8 +66,8 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
             cat = null;
         }
 
-        db.close();
-        c.close();
+        //db.close();
+        //c.close();
         return cat;
     }
 
@@ -67,14 +84,14 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         else{
             alarm = null;
         }
-        db.close();
-        c.close();
+        //db.close();
+        //c.close();
         return alarm;
     }
 
     public Cursor queryAlarms(){
         SQLiteDatabase db = getReadableDatabase();
-        Cursor c = db.query(Alarm.TABLE_NAME, null,null,null,null,null,null);
+        Cursor c = db.query(Alarm.TABLE_NAME, null, null, null, null, null, null);
         return c;
     }
 
@@ -86,7 +103,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         cv.put(Alarm.COLUMN_CLOCK, alarm.getDay());
 
         long id = db.insert(Alarm.TABLE_NAME, null, cv);
-        db.close();
+        //db.close();
         return id;
     }
 
