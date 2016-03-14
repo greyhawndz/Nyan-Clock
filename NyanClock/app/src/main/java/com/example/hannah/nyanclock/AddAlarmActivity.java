@@ -65,6 +65,7 @@ public class AddAlarmActivity extends AppCompatActivity {
                 // Save the alarm, add alarm to database
 
                 boolean[] selectedDays = new boolean[7]; // days with checks
+                int trueDaysCount = 0;
                 hour = timePicker.getCurrentHour();
                 minute = timePicker.getCurrentMinute();
 
@@ -74,6 +75,7 @@ public class AddAlarmActivity extends AppCompatActivity {
                     if(listDays.get(i).isChecked())
                     {
                         selectedDays[i] = true;
+                        trueDaysCount++;
                     }
                     else
                     {
@@ -84,7 +86,7 @@ public class AddAlarmActivity extends AppCompatActivity {
 
                 // if selectedDays has at least one day, then user can save alarm
                 // else, Toast
-                if(selectedDays.length > 0)
+                if(trueDaysCount > 0)
                 {
                     // We changed the hour to 12 hour format
                     String strHour = "";
