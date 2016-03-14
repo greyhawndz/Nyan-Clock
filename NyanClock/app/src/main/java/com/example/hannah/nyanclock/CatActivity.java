@@ -104,6 +104,7 @@ public class CatActivity extends AppCompatActivity {
 
                 // increase happiness by 10
                 int newHunger = cat.getHunger() + 10;
+                int newHappy = cat.getHappiness() + 5;
 
                 if(newHunger > 100)
                 {
@@ -113,11 +114,20 @@ public class CatActivity extends AppCompatActivity {
                 {
                     cat.setHunger(newHunger);
                 }
+                if(newHappy > 100)
+                {
+                    cat.setHappiness(100);
+                }
+                else
+                {
+                    cat.setHappiness(newHappy);
+                }
 
                 dbHelper.updateCat(cat);
                 cat = dbHelper.getCat(1);
 
                 tvHungerCount.setText(String.valueOf(cat.getHunger()));
+                tvHappyCount.setText(String.valueOf(cat.getHappiness()));
             }
         });
 
@@ -134,7 +144,7 @@ public class CatActivity extends AppCompatActivity {
         // Swipe Left/Right on cat
         ivCat.setOnTouchListener(new OnSwipeTouchListener(CatActivity.this) {
             public void onSwipeTop() {
-                Toast.makeText(CatActivity.this, "top", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(CatActivity.this, "top", Toast.LENGTH_SHORT).show();
             }
             public void onSwipeRight() {
                 cat = dbHelper.getCat(1);
@@ -177,7 +187,7 @@ public class CatActivity extends AppCompatActivity {
                 tvHappyCount.setText(String.valueOf(cat.getHappiness()));
             }
             public void onSwipeBottom() {
-                Toast.makeText(CatActivity.this, "bottom", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(CatActivity.this, "bottom", Toast.LENGTH_SHORT).show();
             }
 
         });
