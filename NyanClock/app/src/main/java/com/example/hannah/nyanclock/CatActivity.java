@@ -35,6 +35,7 @@ public class CatActivity extends AppCompatActivity {
     ImageView ivCat, ivState;
     final static int REQUEST_TIME = 0;
     final static String KEY_TIME = "time";
+    boolean firstTime; // if app is newly opened
 
     final static int RECEIVER = 1;
     DatabaseOpenHelper dbHelper;
@@ -63,15 +64,21 @@ public class CatActivity extends AppCompatActivity {
         final Runnable updateTask = new Runnable() {
             @Override
             public void run() {
-                int newHunger;
-                int newHappy;
+                int newHunger = cat.getHunger();
+                int newHappy = cat.getHappiness();
                 cat = dbHelper.getCat(1);
 
-                System.out.println("INSIDE RUN");
+                // if firstTime == true opening app then will not decrease hunger and happy immediately
+                // if firstTime == false will decrease hunger and happy
+                if(!firstTime)
+                {
+                    // Decrease hunger and happiness
+                    newHunger -= 10;
+                    newHappy -= 10;
 
-                // Decrease hunger and happiness
-                newHunger = cat.getHunger() - 10;
-                newHappy = cat.getHappiness() - 10;
+                    System.out.println("BANANA: firstTime == FALSE");
+                }
+
                 if(newHunger > 0)
                 {
                     cat.setHunger(newHunger);
@@ -89,13 +96,18 @@ public class CatActivity extends AppCompatActivity {
                     cat.setHappiness(0);
                 }
 
+                firstTime = false;
 
+                dbHelper.updateCat(cat);
+                cat = dbHelper.getCat(1);
+
+                System.out.println("BANANA: UpdateTask -> HUNGER:" + cat.getHunger() + " HAPPY:" + cat.getHappiness());
 
                 // Display the updated hunger and happiness
                 tvHungerCount.setText(String.valueOf(cat.getHunger()));
                 tvHappyCount.setText(String.valueOf(cat.getHappiness()));
 
-                handler.postDelayed(this, 60000);
+                handler.postDelayed(this, 20000);
 
                 if(newHappy < 50 || newHunger < 50){
 
@@ -114,8 +126,9 @@ public class CatActivity extends AppCompatActivity {
                 }
             }
         };
-        // Will call updateTask after 1 minute into opening the app -> does ONCE
-        handler.postDelayed(updateTask, 60000);
+        // Will call updateTask after 1 second into opening the app -> does ONCE
+        firstTime = true;
+        handler.postDelayed(updateTask, 500);
 
 
         // Feeds the cat -> increases hunger meter and happy meter
@@ -136,6 +149,7 @@ public class CatActivity extends AppCompatActivity {
                     newHappy = cat.getHappiness();
                 }
 
+
                 if (newHunger > 100) {
                     cat.setHunger(100);
                 } else {
@@ -150,6 +164,8 @@ public class CatActivity extends AppCompatActivity {
 
                 dbHelper.updateCat(cat);
                 cat = dbHelper.getCat(1);
+
+                System.out.println("BANANA: FeedButton -> HUNGER:" + cat.getHunger() + " HAPPY:" + cat.getHappiness());
 
                 tvHungerCount.setText(String.valueOf(cat.getHunger()));
 
@@ -180,8 +196,6 @@ public class CatActivity extends AppCompatActivity {
                 // increase happiness by 10
                 int newHappy = cat.getHappiness() + 10;
 
-
-
                 if(newHappy > 100)
                 {
 
@@ -192,6 +206,8 @@ public class CatActivity extends AppCompatActivity {
 
                 dbHelper.updateCat(cat);
                 cat = dbHelper.getCat(1);
+
+                System.out.println("BANANA: SwipeRight -> HUNGER:" + cat.getHunger() + " HAPPY:" + cat.getHappiness());
 
                 tvHappyCount.setText(String.valueOf(cat.getHappiness()));
             }
@@ -211,6 +227,8 @@ public class CatActivity extends AppCompatActivity {
                 dbHelper.updateCat(cat);
                 cat = dbHelper.getCat(1);
 
+                System.out.println("BANANA: SwipeLeft -> HUNGER:" + cat.getHunger() + " HAPPY:" + cat.getHappiness());
+
                 tvHappyCount.setText(String.valueOf(cat.getHappiness()));
             }
 
@@ -226,11 +244,26 @@ public class CatActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         dbHelper.updateCat(cat);
+        cat = dbHelper.getCat(1);
+
+        System.out.println("BANANA: onPause -> HUNGER:" + cat.getHunger() + " HAPPY:" + cat.getHappiness());
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         dbHelper.updateCat(cat);
+        cat = dbHelper.getCat(1);
+
+        System.out.println("BANANA: onStop -> HUNGER:" + cat.getHunger() + " HAPPY:" + cat.getHappiness());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        dbHelper.updateCat(cat);
+        cat = dbHelper.getCat(1);
+
+        System.out.println("BANANA: onResume -> HUNGER:" + cat.getHunger() + " HAPPY:" + cat.getHappiness());
     }
 }
