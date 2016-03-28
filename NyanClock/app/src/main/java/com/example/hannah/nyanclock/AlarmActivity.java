@@ -23,9 +23,8 @@ public class AlarmActivity extends AppCompatActivity {
 
     DatabaseOpenHelper dbHelper;
     AlarmCursorAdapter alarmCursorAdapter;
-//    AlarmManager alarmManager;
-//    Calendar retrievedCalendar;
-//    PendingIntent pendingIntent;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +38,8 @@ public class AlarmActivity extends AppCompatActivity {
         dbHelper = new DatabaseOpenHelper(getBaseContext());
 
         // For the alarm clock itself
-//        alarmManager = (AlarmManager) getSystemService(Service.ALARM_SERVICE);
-//        Alarm selectedAlarm = dbHelper.getAlarm(1);
-//        retrievedCalendar = Calendar.getInstance();
-//        retrievedCalendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(selectedAlarm.getTime().substring(0, 2)));
-//        retrievedCalendar.set(Calendar.MINUTE, Integer.parseInt(selectedAlarm.getTime().substring(3, 5)));
-//        Intent myIntent = new Intent(AlarmActivity.this, AlarmReceiver.class);
-//        pendingIntent = PendingIntent.getBroadcast(AlarmActivity.this, 0, myIntent, 0);
-//
+
+
 //        alarmManager.set(AlarmManager.RTC_WAKEUP, retrievedCalendar.getTimeInMillis(), pendingIntent);
 
 

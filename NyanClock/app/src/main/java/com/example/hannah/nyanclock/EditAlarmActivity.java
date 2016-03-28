@@ -1,5 +1,6 @@
 package com.example.hannah.nyanclock;
 
+import android.app.AlarmManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,7 @@ public class EditAlarmActivity extends AppCompatActivity {
     DatabaseOpenHelper dbHelper;
     Alarm currentAlarm;
     ArrayList<CheckBox> listDays;
+    AlarmManager alarmManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,6 +163,7 @@ public class EditAlarmActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Delete from database
+
                 dbHelper.deleteAlarm(currentAlarm.getId());
                 finish();
             }

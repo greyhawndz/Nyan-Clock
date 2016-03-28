@@ -1,5 +1,9 @@
 package com.example.hannah.nyanclock;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +22,11 @@ public class AddAlarmActivity extends AppCompatActivity {
     TimePicker timePicker;
     CheckBox cbSunday, cbMonday, cbTuesday, cbWednesday, cbThursday, cbFriday, cbSaturday;
     ArrayList<CheckBox> listDays;
-
+    AlarmManager alarmManager;
+    Calendar retrievedCalendar;
+    DatabaseOpenHelper dbHelper;
+    PendingIntent pendingIntent;
+    int dayOfWeek;
     public Calendar calendar;
     public int hour;
     public int minute;
@@ -49,6 +57,12 @@ public class AddAlarmActivity extends AppCompatActivity {
         listDays.add(cbThursday);
         listDays.add(cbFriday);
         listDays.add(cbSaturday);
+
+        dbHelper = new DatabaseOpenHelper(getBaseContext());
+
+        alarmManager = (AlarmManager) getSystemService(Service.ALARM_SERVICE);
+        retrievedCalendar = Calendar.getInstance();
+
 
         // Goes back to AlarmActivity
         buttonCancel.setOnClickListener(new View.OnClickListener() {
@@ -120,6 +134,35 @@ public class AddAlarmActivity extends AppCompatActivity {
                     Alarm newAlarm = new Alarm(strHour, strMinute, selectedDays, AM_PM);
                     DatabaseOpenHelper dbHelper = new DatabaseOpenHelper(getBaseContext());
                     dbHelper.addAlarm(newAlarm);
+
+                    //set the newly created alarm
+                    dayOfWeek = 0;
+                    for(int i = 0; i < selectedDays.length; i++) {
+                        if (selectedDays[i] == true) {
+                            dayOfWeek = i + 1;
+                        }
+                        int days = dayOfWeek + (7 - retrievedCalendar.get(Calendar.DAY_OF_WEEK)); //get number of days before specified day in alarm
+                        retrievedCalendar.set(Calendar.DATE, days);
+                        retrievedCalendar.set(Calendar.HOUR, Integer.parseInt(newAlarm.getTime().substring(0, 2)));
+                        retrievedCalendar.set(Calendar.MINUTE, Integer.parseInt(newAlarm.getTime().substring(3, 5)));
+                        if(AM_PM == "AM"){
+                            retrievedCalendar.set(Calendar.AM_PM, Calendar.AM);
+                        }
+                        else{
+                            retrievedCalendar.set(Calendar.AM_PM, Calendar.PM);
+                        }
+
+
+                        int broadCastID = (int) System.currentTimeMillis();
+                        Intent myIntent = new Intent(AddAlarmActivity.this, AlarmReceiver.class);
+                        pendingIntent = PendingIntent.getBroadcast(AddAlarmActivity.this, broadCastID, myIntent, 0);
+
+                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, retrievedCalendar.getTimeInMillis(), 24*60*60*1000,pendingIntent);
+                    }
+
+
+
+
 
                     Log.i("HOUR", String.valueOf(hour));
                     Log.i("MINUTE", String.valueOf(minute));
