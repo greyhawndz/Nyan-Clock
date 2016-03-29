@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -27,6 +28,8 @@ public class AlarmActivity extends AppCompatActivity {
     Calendar retrievedCalendar;
     PendingIntent pendingIntent;
 
+    static int broadcastCode = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,16 +41,18 @@ public class AlarmActivity extends AppCompatActivity {
         buttonAdd = (ImageButton) findViewById(R.id.button_AddAlarm);
         dbHelper = new DatabaseOpenHelper(getBaseContext());
 
-        // For the alarm clock itself
+        /*// For the alarm clock itself
         alarmManager = (AlarmManager) getSystemService(Service.ALARM_SERVICE);
-        Alarm selectedAlarm = dbHelper.getAlarm(1);
-        retrievedCalendar = Calendar.getInstance();
-        retrievedCalendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(selectedAlarm.getTime().substring(0, 2)));
-        retrievedCalendar.set(Calendar.MINUTE, Integer.parseInt(selectedAlarm.getTime().substring(3, 5)));
-        Intent myIntent = new Intent(AlarmActivity.this, AlarmReceiver.class);
-        pendingIntent = PendingIntent.getBroadcast(AlarmActivity.this, 0, myIntent, 0);
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, retrievedCalendar.getTimeInMillis(), pendingIntent);
+        //Alarm selectedAlarm = dbHelper.getAlarm(1);
+        retrievedCalendar = Calendar.getInstance();
+        retrievedCalendar.setTimeInMillis(System.currentTimeMillis());
+        retrievedCalendar.set(Calendar.MINUTE, 37);
+        retrievedCalendar.set(Calendar.SECOND, 0);
+        Log.i("TAG", "calendar is " + retrievedCalendar.toString());
+        Intent myIntent = new Intent(AlarmActivity.this, AlarmReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, retrievedCalendar.getTimeInMillis(), pendingIntent);*/
 
         // Goes back to CatActivity
         buttonBack.setOnClickListener(new View.OnClickListener() {

@@ -1,5 +1,9 @@
 package com.example.hannah.nyanclock;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,10 +22,14 @@ public class AddAlarmActivity extends AppCompatActivity {
     TimePicker timePicker;
     CheckBox cbSunday, cbMonday, cbTuesday, cbWednesday, cbThursday, cbFriday, cbSaturday;
     ArrayList<CheckBox> listDays;
+    AlarmManager alarmManager;
+    Calendar retrievedCalendar;
+    PendingIntent pendingIntent;
 
     public Calendar calendar;
     public int hour;
     public int minute;
+    public int broadcastCode = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +134,30 @@ public class AddAlarmActivity extends AppCompatActivity {
                     Log.i("HOUR", String.valueOf(hour));
                     Log.i("MINUTE", String.valueOf(minute));
                     Log.i("CLOCK", AM_PM);
+
+                    // For the alarm clock itself
+                    alarmManager = (AlarmManager) getSystemService(Service.ALARM_SERVICE);
+
+                    for(int i = 0; i < 7; i++)
+                    {
+                        if(selectedDays[i])
+                        {
+                            //Alarm selectedAlarm = dbHelper.getAlarm(1);
+                            retrievedCalendar = Calendar.getInstance();
+                            retrievedCalendar.set(Calendar.DAY_OF_WEEK, i+1);
+                            retrievedCalendar.set(Calendar.HOUR_OF_DAY, hour);
+                            retrievedCalendar.set(Calendar.MINUTE, minute);
+                            retrievedCalendar.set(Calendar.SECOND, 0);
+                            Log.i("TAG", "calendar is " + retrievedCalendar.toString());
+                            Log.i("BROADCAST CODE", "Code is "+broadcastCode);
+                            Intent myIntent = new Intent(AddAlarmActivity.this, AlarmReceiver.class);
+                            pendingIntent = PendingIntent.getBroadcast(getBaseContext(), broadcastCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                            broadcastCode++;
+                            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, retrievedCalendar.getTimeInMillis(), 7*24*60*60*1000, pendingIntent);
+                        }
+                    }
+
+                    startActivity(new Intent(AddAlarmActivity.this, AlarmActivity.class));
 
                     finish();
                 }
