@@ -24,12 +24,12 @@ public class AddAlarmActivity extends AppCompatActivity {
     ArrayList<CheckBox> listDays;
     AlarmManager alarmManager;
     Calendar retrievedCalendar;
-    DatabaseOpenHelper dbHelper;
     PendingIntent pendingIntent;
-    int dayOfWeek;
+
     public Calendar calendar;
     public int hour;
     public int minute;
+    public int broadcastCode = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +58,6 @@ public class AddAlarmActivity extends AppCompatActivity {
         listDays.add(cbFriday);
         listDays.add(cbSaturday);
 
-        dbHelper = new DatabaseOpenHelper(getBaseContext());
-
-        alarmManager = (AlarmManager) getSystemService(Service.ALARM_SERVICE);
-        retrievedCalendar = Calendar.getInstance();
-
-
         // Goes back to AlarmActivity
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +73,7 @@ public class AddAlarmActivity extends AppCompatActivity {
                 // Save the alarm, add alarm to database
 
                 boolean[] selectedDays = new boolean[7]; // days with checks
+                int trueDaysCount = 0;
                 hour = timePicker.getCurrentHour();
                 minute = timePicker.getCurrentMinute();
 
@@ -88,6 +83,7 @@ public class AddAlarmActivity extends AppCompatActivity {
                     if(listDays.get(i).isChecked())
                     {
                         selectedDays[i] = true;
+                        trueDaysCount++;
                     }
                     else
                     {
@@ -98,7 +94,7 @@ public class AddAlarmActivity extends AppCompatActivity {
 
                 // if selectedDays has at least one day, then user can save alarm
                 // else, Toast
-                if(selectedDays.length > 0)
+                if(trueDaysCount > 0)
                 {
                     // We changed the hour to 12 hour format
                     String strHour = "";
@@ -135,38 +131,33 @@ public class AddAlarmActivity extends AppCompatActivity {
                     DatabaseOpenHelper dbHelper = new DatabaseOpenHelper(getBaseContext());
                     dbHelper.addAlarm(newAlarm);
 
-                    //set the newly created alarm
-                    dayOfWeek = 0;
-                    for(int i = 0; i < selectedDays.length; i++) {
-                        if (selectedDays[i] == true) {
-                            dayOfWeek = i + 1;
-                        }
-                        int days = dayOfWeek + (7 - retrievedCalendar.get(Calendar.DAY_OF_WEEK)); //get number of days before specified day in alarm
-                        retrievedCalendar.set(Calendar.DATE, days);
-                        retrievedCalendar.set(Calendar.HOUR, Integer.parseInt(newAlarm.getTime().substring(0, 2)));
-                        retrievedCalendar.set(Calendar.MINUTE, Integer.parseInt(newAlarm.getTime().substring(3, 5)));
-                        if(AM_PM == "AM"){
-                            retrievedCalendar.set(Calendar.AM_PM, Calendar.AM);
-                        }
-                        else{
-                            retrievedCalendar.set(Calendar.AM_PM, Calendar.PM);
-                        }
-
-
-                        int broadCastID = (int) System.currentTimeMillis();
-                        Intent myIntent = new Intent(AddAlarmActivity.this, AlarmReceiver.class);
-                        pendingIntent = PendingIntent.getBroadcast(AddAlarmActivity.this, broadCastID, myIntent, 0);
-
-                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, retrievedCalendar.getTimeInMillis(), 24*60*60*1000,pendingIntent);
-                    }
-
-
-
-
-
                     Log.i("HOUR", String.valueOf(hour));
                     Log.i("MINUTE", String.valueOf(minute));
                     Log.i("CLOCK", AM_PM);
+
+                    // For the alarm clock itself
+                    alarmManager = (AlarmManager) getSystemService(Service.ALARM_SERVICE);
+
+                    for(int i = 0; i < 7; i++)
+                    {
+                        if(selectedDays[i])
+                        {
+                            //Alarm selectedAlarm = dbHelper.getAlarm(1);
+                            retrievedCalendar = Calendar.getInstance();
+                            retrievedCalendar.set(Calendar.DAY_OF_WEEK, i+1);
+                            retrievedCalendar.set(Calendar.HOUR_OF_DAY, hour);
+                            retrievedCalendar.set(Calendar.MINUTE, minute);
+                            retrievedCalendar.set(Calendar.SECOND, 0);
+                            Log.i("TAG", "calendar is " + retrievedCalendar.toString());
+                            Log.i("BROADCAST CODE", "Code is "+broadcastCode);
+                            Intent myIntent = new Intent(AddAlarmActivity.this, AlarmReceiver.class);
+                            pendingIntent = PendingIntent.getBroadcast(getBaseContext(), broadcastCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                            broadcastCode++;
+                            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, retrievedCalendar.getTimeInMillis(), 7*24*60*60*1000, pendingIntent);
+                        }
+                    }
+
+                    startActivity(new Intent(AddAlarmActivity.this, AlarmActivity.class));
 
                     finish();
                 }

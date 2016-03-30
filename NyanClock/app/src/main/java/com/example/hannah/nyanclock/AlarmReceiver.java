@@ -9,10 +9,11 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.content.WakefulBroadcastReceiver;
+import android.util.Log;
 
-public class AlarmReceiver extends WakefulBroadcastReceiver {
-    public AlarmReceiver() {
-    }
+public class AlarmReceiver extends WakefulBroadcastReceiver
+{
+
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -23,16 +24,28 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         //this will sound the alarm tone
         //this will sound the alarm once, if you wish to
         //raise alarm in loop continuously then use MediaPlayer and setLooping(true)
+
+        Log.i("tag", "hello");
+
         Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        if (alarmUri == null) {
+        if (alarmUri == null)
+        {
             alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         }
         Ringtone ringtone = RingtoneManager.getRingtone(context, alarmUri);
+
         ringtone.play();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        ringtone.stop();
+
 
         //this will send a notification message
         ComponentName comp = new ComponentName(context.getPackageName(), AlarmService.class.getName());
-        startWakefulService(context, (intent.setComponent(comp)));
+        // startWakefulService(context, (intent.setComponent(comp)));
         setResultCode(Activity.RESULT_OK);
     }
 }
