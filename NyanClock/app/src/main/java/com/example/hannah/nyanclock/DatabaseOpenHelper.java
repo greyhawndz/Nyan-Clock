@@ -23,6 +23,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
                 + Cat.COLUMN_HUNGER + " INT);";
         String sql2 = "CREATE TABLE " +Alarm.TABLE_NAME + "("
                 +Alarm.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                +Alarm.BROADCAST_ID + " INTEGER,"
                 +Alarm.COLUMN_TIME + " TEXT, "
                 +Alarm.COLUMN_SUNDAY + " TEXT, "
                 +Alarm.COLUMN_MONDAY + " TEXT, "
@@ -32,6 +33,9 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
                 +Alarm.COLUMN_FRIDAY + " TEXT, "
                 +Alarm.COLUMN_SATURDAY + " TEXT, "
                 +Alarm.COLUMN_CLOCK +" TEXT);";
+        String sql3 = "CREATE TABLE " + "Broadcast_Table" + "("
+                +Alarm.COLUMN_ID + " INTEGER,"
+                +Alarm.BROADCAST_ID + " INTEGER);";
         db.execSQL(sql);
         db.execSQL(sql2);
 
@@ -47,6 +51,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         boolean[] setDays = {false, true, false, false, false, false, false};
         Alarm alarm = new Alarm("06", "00", setDays, "AM");
         ContentValues cv2 = new ContentValues();
+        //cv2.put(Alarm.BROADCAST_ID, 0);
         cv2.put(Alarm.COLUMN_TIME, alarm.getTime());
         cv2.put(Alarm.COLUMN_CLOCK, alarm.getClock());
         cv2.put(Alarm.COLUMN_SUNDAY, alarm.isSun());
@@ -154,6 +159,21 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     public Cursor queryAlarms(){
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.query(Alarm.TABLE_NAME, null, null, null, null, null, null);
+        return c;
+    }
+
+    public long addBroadCast(int id, int broadcast){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(Alarm.COLUMN_ID, id);
+        cv.put(Alarm.BROADCAST_ID, broadcast);
+
+        return db.insert("Broadcast_Table", null, cv);
+    }
+
+    public Cursor queryBroadcasts(int id){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.query("Broadcast_Table", null, " " + Alarm.COLUMN_ID + " = ?", new String[]{String.valueOf(id)}, null,null,null);
         return c;
     }
 

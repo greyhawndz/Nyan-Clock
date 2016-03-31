@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 public class Alarm {
     public static final String TABLE_NAME = "Alarms";
     public static final String COLUMN_ID = "_id";
+    public static final String BROADCAST_ID = "broadcast_id";
     public static final String COLUMN_TIME = "Time";
     public static final String COLUMN_SUNDAY = "Sunday";
     public static final String COLUMN_MONDAY = "Monday";
@@ -77,6 +78,7 @@ public class Alarm {
             e.printStackTrace();
         }
     }
+
 
     public void setSun(boolean sun) {
         this.sun = sun;
@@ -159,4 +161,5 @@ public class Alarm {
     public void setClock(String clock){
         this.clock = clock;
     }
+
 }

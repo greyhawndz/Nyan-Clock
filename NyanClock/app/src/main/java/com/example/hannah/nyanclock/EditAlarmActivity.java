@@ -1,6 +1,10 @@
 package com.example.hannah.nyanclock;
 
 import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +15,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class EditAlarmActivity extends AppCompatActivity {
 
@@ -18,10 +23,12 @@ public class EditAlarmActivity extends AppCompatActivity {
     TimePicker timePicker;
     CheckBox cbSunday, cbMonday, cbTuesday, cbWednesday, cbThursday, cbFriday, cbSaturday;
 
+
     DatabaseOpenHelper dbHelper;
     Alarm currentAlarm;
     ArrayList<CheckBox> listDays;
     AlarmManager alarmManager;
+    Calendar retrievedCalendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +61,9 @@ public class EditAlarmActivity extends AppCompatActivity {
 
         // get the id of the selected alarm
         int id = getIntent().getIntExtra(Alarm.COLUMN_ID, 0);
+
+        //get the alarm manager
+        alarmManager = (AlarmManager) getSystemService(Service.ALARM_SERVICE);
 
         //get current note
         // the id in the param is the ID we passed from AlarmActivity
@@ -163,6 +173,22 @@ public class EditAlarmActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Delete from database
+                int broadcastID;
+                Cursor c = dbHelper.queryBroadcasts(currentAlarm.getId());
+                if(c.moveToFirst()){
+                    broadcastID = c.getInt(1);
+                    Intent myIntent = new Intent(EditAlarmActivity.this, AlarmReceiver.class);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), broadcastID, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    alarmManager.cancel(pendingIntent);
+                    while(c.moveToNext()){
+                        broadcastID = c.getInt(1);
+                        myIntent = new Intent(EditAlarmActivity.this, AlarmReceiver.class);
+                        pendingIntent = PendingIntent.getBroadcast(getBaseContext(), broadcastID, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        alarmManager.cancel(pendingIntent);
+
+                    }
+
+                }
 
                 dbHelper.deleteAlarm(currentAlarm.getId());
                 finish();
@@ -228,8 +254,49 @@ public class EditAlarmActivity extends AppCompatActivity {
                         AM_PM = "PM";
                     }
 
+                    int broadcastID;
+                    //delete currentPending intents in alarmManager
+                    Cursor c = dbHelper.queryBroadcasts(currentAlarm.getId());
+                    if(c.moveToFirst()){
+                        broadcastID = c.getInt(1);
+                        Intent myIntent = new Intent(EditAlarmActivity.this, AlarmReceiver.class);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), broadcastID, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        alarmManager.cancel(pendingIntent);
+                        while(c.moveToNext()){
+                            broadcastID = c.getInt(1);
+                            myIntent = new Intent(EditAlarmActivity.this, AlarmReceiver.class);
+                            pendingIntent = PendingIntent.getBroadcast(getBaseContext(), broadcastID, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                            alarmManager.cancel(pendingIntent);
+
+                        }
+
+                    }
+
+
                     // We pass the ID of currentAlarm so we will edit that alarm
                     Alarm newAlarm = new Alarm(currentAlarm.getId(), strHour, strMinute, selectedDays, AM_PM);
+
+                    //add new alarms in alarmManager
+                    for(int i = 0; i < 7; i++)
+                    {
+                        if(selectedDays[i])
+                        {
+                            //Alarm selectedAlarm = dbHelper.getAlarm(1);
+                            retrievedCalendar = Calendar.getInstance();
+                            retrievedCalendar.set(Calendar.DAY_OF_WEEK, i+1);
+                            retrievedCalendar.set(Calendar.HOUR_OF_DAY, hour);
+                            retrievedCalendar.set(Calendar.MINUTE, minute);
+                            retrievedCalendar.set(Calendar.SECOND, 0);
+                            broadcastID = (int) System.currentTimeMillis();
+                            Log.i("TAG", "calendar is " + retrievedCalendar.toString());
+                            Log.i("BROADCAST CODE", "Code is " + broadcastID);
+                            dbHelper.addBroadCast(newAlarm.getId(), broadcastID);
+                            Intent myIntent = new Intent(EditAlarmActivity.this, AlarmReceiver.class);
+                            PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), broadcastID, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, retrievedCalendar.getTimeInMillis(), 7*24*60*60*1000, pendingIntent);
+                        }
+                    }
                     // we pass the newAlarm so that DatabaseOpenHelper can update
                     dbHelper.editAlarm(newAlarm);
 

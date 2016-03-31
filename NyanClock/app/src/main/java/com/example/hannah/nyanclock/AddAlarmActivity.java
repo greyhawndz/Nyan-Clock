@@ -29,7 +29,7 @@ public class AddAlarmActivity extends AppCompatActivity {
     public Calendar calendar;
     public int hour;
     public int minute;
-    public int broadcastCode = 0;
+    public int broadcastCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +129,7 @@ public class AddAlarmActivity extends AppCompatActivity {
                     // Add to database
                     Alarm newAlarm = new Alarm(strHour, strMinute, selectedDays, AM_PM);
                     DatabaseOpenHelper dbHelper = new DatabaseOpenHelper(getBaseContext());
-                    dbHelper.addAlarm(newAlarm);
+
 
                     Log.i("HOUR", String.valueOf(hour));
                     Log.i("MINUTE", String.valueOf(minute));
@@ -149,13 +149,17 @@ public class AddAlarmActivity extends AppCompatActivity {
                             retrievedCalendar.set(Calendar.MINUTE, minute);
                             retrievedCalendar.set(Calendar.SECOND, 0);
                             Log.i("TAG", "calendar is " + retrievedCalendar.toString());
-                            Log.i("BROADCAST CODE", "Code is "+broadcastCode);
+                            Log.i("BROADCAST CODE", "Code is " + broadcastCode);
+                            broadcastCode = (int) System.currentTimeMillis();
+                            dbHelper.addBroadCast(newAlarm.getId(), broadcastCode);
                             Intent myIntent = new Intent(AddAlarmActivity.this, AlarmReceiver.class);
                             pendingIntent = PendingIntent.getBroadcast(getBaseContext(), broadcastCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                            broadcastCode++;
+
                             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, retrievedCalendar.getTimeInMillis(), 7*24*60*60*1000, pendingIntent);
                         }
                     }
+
+                    dbHelper.addAlarm(newAlarm);
 
                     startActivity(new Intent(AddAlarmActivity.this, AlarmActivity.class));
 
