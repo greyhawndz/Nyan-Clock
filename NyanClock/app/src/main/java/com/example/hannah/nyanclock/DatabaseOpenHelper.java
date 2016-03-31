@@ -38,6 +38,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
                 +Alarm.BROADCAST_ID + " INTEGER);";
         db.execSQL(sql);
         db.execSQL(sql2);
+        db.execSQL(sql3);
 
         // Inserted cat into cat database
         Cat cat = new Cat(100,100);
