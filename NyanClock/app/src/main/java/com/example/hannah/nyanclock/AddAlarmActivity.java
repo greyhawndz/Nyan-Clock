@@ -31,6 +31,8 @@ public class AddAlarmActivity extends AppCompatActivity {
     public int minute;
     public int broadcastCode;
 
+    public int[] timeArr = {12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +79,19 @@ public class AddAlarmActivity extends AppCompatActivity {
                 hour = timePicker.getCurrentHour();
                 minute = timePicker.getCurrentMinute();
 
+                // We identify whether hour is AM or PM
+                String AM_PM ;
+                if(hour < 12) {
+                    AM_PM = "AM";
+                } else {
+                    AM_PM = "PM";
+                }
+
+                Log.i("BHOUR", String.valueOf(hour));
+                //Convert to 12 hour format
+                hour = timeArr[hour];
+                Log.i("AHOUR", String.valueOf(hour));
+
                 // Check if the checkbox is checked, if yes then add to selectedDays
                 for(int i = 0; i < listDays.size(); i++)
                 {
@@ -96,7 +111,7 @@ public class AddAlarmActivity extends AppCompatActivity {
                 // else, Toast
                 if(trueDaysCount > 0)
                 {
-                    // We changed the hour to 12 hour format
+                    // We make hour into 2-digit format
                     String strHour = "";
                     if(hour < 10)
                     {
@@ -118,14 +133,6 @@ public class AddAlarmActivity extends AppCompatActivity {
                         strMinute = "" + minute;
                     }
 
-                    // We identify whether hour is AM or PM
-                    String AM_PM ;
-                    if(hour < 12) {
-                        AM_PM = "AM";
-                    } else {
-                        AM_PM = "PM";
-                    }
-
                     // Add to database
                     Alarm newAlarm = new Alarm(strHour, strMinute, selectedDays, AM_PM);
                     DatabaseOpenHelper dbHelper = new DatabaseOpenHelper(getBaseContext());
@@ -145,9 +152,15 @@ public class AddAlarmActivity extends AppCompatActivity {
                             //Alarm selectedAlarm = dbHelper.getAlarm(1);
                             retrievedCalendar = Calendar.getInstance();
                             retrievedCalendar.set(Calendar.DAY_OF_WEEK, i+1);
-                            retrievedCalendar.set(Calendar.HOUR_OF_DAY, hour);
+                            retrievedCalendar.set(Calendar.HOUR, hour);
                             retrievedCalendar.set(Calendar.MINUTE, minute);
                             retrievedCalendar.set(Calendar.SECOND, 0);
+                            if(AM_PM == "AM"){
+                                retrievedCalendar.set(Calendar.AM_PM, Calendar.AM);
+                            }
+                            else{
+                                retrievedCalendar.set(Calendar.AM_PM, Calendar.PM);
+                            }
                             Log.i("TAG", "calendar is " + retrievedCalendar.toString());
                             Log.i("BROADCAST CODE", "Code is " + broadcastCode);
                             broadcastCode = (int) System.currentTimeMillis();
@@ -155,7 +168,7 @@ public class AddAlarmActivity extends AppCompatActivity {
                             Intent myIntent = new Intent(AddAlarmActivity.this, AlarmReceiver.class);
                             pendingIntent = PendingIntent.getBroadcast(getBaseContext(), broadcastCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, retrievedCalendar.getTimeInMillis(), 7*24*60*60*1000, pendingIntent);
+                            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, retrievedCalendar.getTimeInMillis(), retrievedCalendar.getTimeInMillis() - 7*24*60*60*1000, pendingIntent);
                         }
                     }
 
