@@ -1,0 +1,10 @@
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+    <item android:drawable="@drawable/cat_blink0" android:duration="10000" />
+    <item android:drawable="@drawable/cat_blink1" android:duration="10" />
+    <item android:drawable="@drawable/cat_blink2" android:duration="10" />
+    <item android:drawable="@drawable/cat_blink3" android:duration="10" />
+    <item android:drawable="@drawable/cat_blink4" android:duration="10" />
+    <item android:drawable="@drawable/cat_blink5" android:duration="10" />
+    <item android:drawable="@drawable/cat_blink6" android:duration="10" />
+</animation-list>

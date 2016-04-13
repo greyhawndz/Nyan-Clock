@@ -54,6 +54,7 @@ public class CatActivity extends AppCompatActivity {
         tvHungerCount = (TextView) findViewById(R.id.tv_HungerCount);
         tvHappyCount = (TextView) findViewById(R.id.tv_HappyCount);
         ivCat = (ImageView) findViewById(R.id.iv_Cat);
+        ivCat.setBackgroundResource(R.drawable.actual_cat);
         ivState = (ImageView) findViewById(R.id.iv_state);
         dbHelper = new DatabaseOpenHelper(getBaseContext());
         cat = dbHelper.getCat(1);
@@ -67,6 +68,8 @@ public class CatActivity extends AppCompatActivity {
                 int newHunger = cat.getHunger();
                 int newHappy = cat.getHappiness();
                 cat = dbHelper.getCat(1);
+
+                ivCat.setBackgroundResource(R.drawable.gif_blink);
 
                 // if firstTime == true opening app then will not decrease hunger and happy immediately
                 // if firstTime == false will decrease hunger and happy
@@ -191,6 +194,8 @@ public class CatActivity extends AppCompatActivity {
             }
 
             public void onSwipeRight() {
+                ivCat.setBackgroundResource(R.drawable.gif_right);
+
                 cat = dbHelper.getCat(1);
 
                 // increase happiness by 10
@@ -213,6 +218,8 @@ public class CatActivity extends AppCompatActivity {
             }
 
             public void onSwipeLeft() {
+                ivCat.setBackgroundResource(R.drawable.gif_left);
+
                 cat = dbHelper.getCat(1);
 
                 // increase happiness by 10
