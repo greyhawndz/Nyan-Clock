@@ -35,6 +35,8 @@ public class AlarmActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
 
+        Log.i("TIME CURRENT", "TIME IS "+Calendar.getInstance().getTime());
+
         // Variables
         lvAlarms = (RecyclerView) findViewById(R.id.lv_Alarms);
         buttonBack = (ImageButton) findViewById(R.id.button_Back);

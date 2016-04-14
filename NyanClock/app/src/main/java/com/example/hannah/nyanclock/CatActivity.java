@@ -9,6 +9,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.media.Ringtone;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -150,7 +151,7 @@ public class CatActivity extends AppCompatActivity {
                 }
 
 
-                if (newHunger > 100) {
+                if (newHunger >= 100) {
                     cat.setHunger(100);
                 } else {
                     cat.setHunger(newHunger);
@@ -196,10 +197,11 @@ public class CatActivity extends AppCompatActivity {
                 // increase happiness by 10
                 int newHappy = cat.getHappiness() + 10;
 
-                if(newHappy > 100)
+                if(newHappy >= 100)
                 {
-
                     cat.setHappiness(100);
+                    Ringtone r=com.example.hannah.nyanclock.AlarmReceiver.ringtone;
+                    r.stop();
                 } else {
                     cat.setHappiness(newHappy);
                 }
@@ -218,8 +220,10 @@ public class CatActivity extends AppCompatActivity {
                 // increase happiness by 10
                 int newHappy = cat.getHappiness() + 10;
 
-                if (newHappy > 100) {
+                if (newHappy >= 100) {
                     cat.setHappiness(100);
+                    Ringtone r=com.example.hannah.nyanclock.AlarmReceiver.ringtone;
+                    r.stop();
                 } else {
                     cat.setHappiness(newHappy);
                 }

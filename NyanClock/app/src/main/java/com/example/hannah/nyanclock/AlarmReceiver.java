@@ -13,7 +13,7 @@ import android.util.Log;
 
 public class AlarmReceiver extends WakefulBroadcastReceiver
 {
-
+    static Ringtone ringtone;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -32,20 +32,23 @@ public class AlarmReceiver extends WakefulBroadcastReceiver
         {
             alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         }
-        Ringtone ringtone = RingtoneManager.getRingtone(context, alarmUri);
 
+        ringtone = RingtoneManager.getRingtone(context, alarmUri);
         ringtone.play();
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        ringtone.stop();
 
+        Intent i = new Intent();
+        i.setClass(context, CatActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
 
         //this will send a notification message
         ComponentName comp = new ComponentName(context.getPackageName(), AlarmService.class.getName());
         // startWakefulService(context, (intent.setComponent(comp)));
         setResultCode(Activity.RESULT_OK);
+    }
+
+    public void stopRingtone()
+    {
+        ringtone.stop();
     }
 }
