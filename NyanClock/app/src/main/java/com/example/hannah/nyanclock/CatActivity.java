@@ -50,7 +50,6 @@ public class CatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cat);
 
-
         // Variables
         ibButtonFeed = (ImageButton) findViewById(R.id.ib_ButtonFeed);
         ibButtonAlarm = (ImageButton) findViewById(R.id.ib_ButtonAlarm);
