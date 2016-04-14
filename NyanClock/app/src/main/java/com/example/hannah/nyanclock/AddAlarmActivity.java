@@ -174,7 +174,7 @@ public class AddAlarmActivity extends AppCompatActivity {
 
                     dbHelper.addAlarm(newAlarm);
 
-                    startActivity(new Intent(AddAlarmActivity.this, AlarmActivity.class));
+//                    startActivity(new Intent(AddAlarmActivity.this, AlarmActivity.class));
 
                     finish();
                 }

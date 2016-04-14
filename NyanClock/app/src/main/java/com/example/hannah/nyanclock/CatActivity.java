@@ -29,11 +29,14 @@ import android.widget.Toast;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class CatActivity extends AppCompatActivity {
 
     ImageButton ibButtonFeed, ibButtonAlarm;
     TextView tvHungerCount, tvHappyCount;
-    ImageView ivCat, ivState;
+    ImageView ivState;
+    GifImageView ivCat;
     final static int REQUEST_TIME = 0;
     final static String KEY_TIME = "time";
     boolean firstTime; // if app is newly opened
@@ -48,13 +51,13 @@ public class CatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cat);
 
-
         // Variables
         ibButtonFeed = (ImageButton) findViewById(R.id.ib_ButtonFeed);
         ibButtonAlarm = (ImageButton) findViewById(R.id.ib_ButtonAlarm);
         tvHungerCount = (TextView) findViewById(R.id.tv_HungerCount);
         tvHappyCount = (TextView) findViewById(R.id.tv_HappyCount);
-        ivCat = (ImageView) findViewById(R.id.iv_Cat);
+        ivCat = (GifImageView) findViewById(R.id.iv_Cat);
+        ivCat.setImageResource(R.drawable.actual_cat);
         ivState = (ImageView) findViewById(R.id.iv_state);
         dbHelper = new DatabaseOpenHelper(getBaseContext());
         cat = dbHelper.getCat(1);
@@ -68,6 +71,8 @@ public class CatActivity extends AppCompatActivity {
                 int newHunger = cat.getHunger();
                 int newHappy = cat.getHappiness();
                 cat = dbHelper.getCat(1);
+
+                ivCat.setImageResource(R.drawable.gif_blink);
 
                 // if firstTime == true opening app then will not decrease hunger and happy immediately
                 // if firstTime == false will decrease hunger and happy
@@ -179,8 +184,10 @@ public class CatActivity extends AppCompatActivity {
         ibButtonAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                ivCat.setImageResource(0);
+
                 Intent i = new Intent();
-                i.setClass(getBaseContext(), AlarmActivity.class);
+                i.setClass(getApplicationContext(), AlarmActivity.class);
                 startActivityForResult(i, REQUEST_TIME);
             }
         });
@@ -192,6 +199,8 @@ public class CatActivity extends AppCompatActivity {
             }
 
             public void onSwipeRight() {
+                ivCat.setImageResource(R.drawable.gif_right);
+
                 cat = dbHelper.getCat(1);
 
                 // increase happiness by 10
@@ -215,6 +224,8 @@ public class CatActivity extends AppCompatActivity {
             }
 
             public void onSwipeLeft() {
+                ivCat.setImageResource(R.drawable.gif_left);
+
                 cat = dbHelper.getCat(1);
 
                 // increase happiness by 10

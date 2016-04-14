@@ -6,13 +6,34 @@
     android:background="@drawable/bg_catroom"
     tools:context="com.example.hannah.nyanclock.CatActivity">
 
-    <ImageView
-        android:layout_width="275dp"
-        android:layout_height="358dp"
+    <!--<ImageView-->
+        <!--android:layout_width="275dp"-->
+        <!--android:layout_height="358dp"-->
+        <!--android:id="@+id/iv_Cat"-->
+        <!--android:src="@drawable/actual_cat"-->
+        <!--android:layout_below="@+id/rl_meter"-->
+        <!--android:layout_centerHorizontal="true" />-->
+
+    <!--<ImageView-->
+        <!--android:id="@+id/iv_Cat"-->
+        <!--android:layout_width="275dp"-->
+        <!--android:layout_height="358dp"-->
+        <!--android:adjustViewBounds="true"-->
+        <!--android:layout_below="@+id/rl_meter"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--/>-->
+
+    <pl.droidsonroids.gif.GifImageView
         android:id="@+id/iv_Cat"
-        android:src="@drawable/actual_cat"
+        android:layout_width="255dp"
+        android:layout_height="358dp"
+        android:adjustViewBounds="true"
         android:layout_below="@+id/rl_meter"
         android:layout_centerHorizontal="true" />
+        <!--android:background="@drawable/gif_blink"-->
+        <!--/>-->
+
+
 
     <LinearLayout
         android:layout_width="184dp"
